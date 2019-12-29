@@ -71,23 +71,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)WindowsAPIHookingBuild\bin\$(Platform)$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)WindowsAPIHookingBuild\intermediates\$(Platform)$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)HookerDLLBuild\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)HookerDLLBuild\intermediates\$(Platform)\$(Configuration)\</IntDir>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)WindowsAPIHookingBuild\bin\$(Platform)$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)WindowsAPIHookingBuild\intermediates\$(Platform)$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)HookerDLLBuild\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)HookerDLLBuild\intermediates\$(Platform)\$(Configuration)\</IntDir>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)WindowsAPIHookingBuild\bin\$(Platform)$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)WindowsAPIHookingBuild\intermediates\$(Platform)$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)HookerDLLBuild\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)HookerDLLBuild\intermediates\$(Platform)\$(Configuration)\</IntDir>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)WindowsAPIHookingBuild\bin\$(Platform)$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)WindowsAPIHookingBuild\intermediates\$(Platform)$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)HookerDLLBuild\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)HookerDLLBuild\intermediates\$(Platform)\$(Configuration)\</IntDir>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
