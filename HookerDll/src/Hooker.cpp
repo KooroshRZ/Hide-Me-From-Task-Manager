@@ -48,7 +48,7 @@ void StartHook() {
 
 	DWORD dwOld = NULL;
 	VirtualProtect((LPVOID)&(pFirstThunkTest->u1.Function), sizeof(DWORD), PAGE_READWRITE, &dwOld);
-	pFirstThunkTest->u1.Function = (DWORD)HookedNtQuerySystemInformation;
+	pFirstThunkTest->u1.Function = (SIZE_T)HookedNtQuerySystemInformation;
 	VirtualProtect((LPVOID)&(pFirstThunkTest->u1.Function), sizeof(DWORD), dwOld, NULL);
 
 	CloseHandle(hModule);
